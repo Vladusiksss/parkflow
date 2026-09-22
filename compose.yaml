@@ -1,0 +1,15 @@
+services:
+  parkflow:
+    build: .
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      PARKFLOW_ADMIN_KEY: ${PARKFLOW_ADMIN_KEY:?Set a random admin key}
+      PARKFLOW_VISION_KEY: ${PARKFLOW_VISION_KEY:?Set a different vision key}
+      PARKFLOW_DEMO: ${PARKFLOW_DEMO:-1}
+      PARKFLOW_DB: /app/data/parkflow.db
+    volumes:
+      - parkflow-data:/app/data
+    restart: unless-stopped
+volumes:
+  parkflow-data:
