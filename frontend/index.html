@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#122e2a"><title>ParkFlow — простір для руху</title>
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css"><script src="/static/app.js" defer></script>
+</head>
+<body>
+<header><a class="brand" href="/"><span class="logo">P<span>↗</span></span>parkflow<span class="brand-dot">●</span></a>
+  <nav aria-label="Навігація"><a class="nav-link active" href="/">Знайти місце</a><a class="nav-link" href="/admin">Панель адміністратора ↗</a></nav>
+  <span id="connection" class="connection">Підключення…</span>
+</header>
+<main>
+  <div class="eyebrow"><span class="dot"></span> РОЗУМНЕ ПАРКУВАННЯ · КИЇВ <span id="mode-label"></span></div>
+  <section class="heading"><div><h1>Менше пошуків.<br><span>Більше вашого часу.</span></h1><p>Оберіть місце, забронюйте та вирушайте.</p></div><div class="heading-note">Ваш наступний крок<br><strong>починається тут ↘</strong></div></section>
+  <div id="error" role="alert" hidden></div>
+  <section class="metrics" aria-label="Статистика паркінгу">
+    <article><span>Вільні місця</span><strong id="free-count">—</strong><small>готові до бронювання <i>↗</i></small></article>
+    <article><span>Завантаженість</span><strong id="occupancy">—</strong><small>фактично зайняті місця</small></article>
+    <article><span>Вартість години</span><strong id="rate">—</strong><small>похвилинне нарахування</small></article>
+    <article><span>Час на прибуття</span><strong>15 <em>хв</em></strong><small>бронь без передоплати</small></article>
+  </section>
+  <section id="driver-view" class="workspace">
+    <div class="map-panel panel">
+      <div class="panel-title"><div><div class="eyebrow">ОБЕРІТЬ СВІЙ ПРОСТІР</div><h2 id="parking-name">ParkFlow · Центральний</h2><p id="address">Завантаження…</p></div><span class="pill">48 місць</span></div>
+      <div class="toolbar"><div class="segments" aria-label="Поверх"><button data-floor="1" class="active">01 поверх</button><button data-floor="2">02 поверх</button></div><label class="filter">Тип місця <select id="kind"><option value="ALL">Усі місця</option><option value="STANDARD">Стандартні</option><option value="EV">⚡ Електромобілі</option><option value="ACCESSIBLE">♿ Доступні</option></select></label></div>
+      <div class="parking-layout"><div class="entrance">↓ В’ЇЗД <span>Пішохідний вхід ↗</span></div><div id="space-map" aria-label="Схема паркування"></div><div class="exit">ВИЇЗД →</div></div>
+      <div class="legend"><span><i class="free"></i>Вільно</span><span><i class="occupied"></i>Зайнято</span><span><i class="reserved"></i>Бронь</span><span><i class="unknown"></i>Невідомо</span><span><i class="disabled"></i>Закрито</span></div>
+    </div>
+    <aside>
+      <section id="my-booking" class="panel booking-panel" hidden></section>
+      <section class="panel choice-panel"><div class="eyebrow">ВАШЕ МІСЦЕ</div><div id="selection"><h2>Паркуйтесь зручно.</h2><p>Натисніть на вільне місце на схемі або скористайтеся рекомендацією.</p></div>
+        <form id="booking-form" hidden><label for="plate">Номер автомобіля</label><input id="plate" placeholder="КА 1234 АВ" minlength="4" maxlength="16" autocomplete="off" required><small>Бронювання зберігається у цьому браузері.</small><button class="primary" id="reserve-btn" type="submit">Забронювати на 15 хв →</button></form>
+        <button id="recommend" class="secondary">✧ Знайти найближче до входу</button>
+      </section>
+      <section class="direction-card"><span class="route-symbol">↗</span><h3>Уже вирушаєте?</h3><p>Прокладіть маршрут до в’їзду в паркінг.</p><a id="directions" target="_blank" rel="noopener">Відкрити Google Maps ↗</a></section>
+      <p class="aside-note">Схема є умовною. Бронювання не керує фізичним доступом до місця.</p>
+    </aside>
+  </section>
+  <footer><span>parkflow / простір для руху</span><span>Локальний MVP · 01</span></footer>
+</main>
+</body></html>

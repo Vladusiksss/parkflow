@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ParkFlow Admin — керування паркінгом</title><link rel="icon" href="/static/icon.svg">
+<link rel="stylesheet" href="/static/style.css"><link rel="stylesheet" href="/static/admin.css">
+<script src="/static/admin.js" defer></script></head><body>
+<header><a class="brand" href="/admin"><span class="logo">P<span>↗</span></span>parkflow<span class="admin-badge">ADMIN</span></a>
+<nav aria-label="Навігація адміністратора"><a class="nav-link" href="#camera-section">Камера</a><a class="nav-link" href="/">Застосунок водія ↗</a></nav><span class="connection" id="connection">Захищений доступ</span></header>
+<main><div class="eyebrow">РОБОЧИЙ ПРОСТІР ОПЕРАТОРА</div><section class="heading"><div><h1>Ваш паркінг.<br><span>Під контролем.</span></h1><p>Камера, місця та бронювання — в одному робочому просторі.</p></div></section><div id="error" role="alert" hidden></div><div id="notice" role="status" hidden></div>
+  <section id="admin-view">
+    <form id="admin-login" class="panel login-panel"><div class="eyebrow">ПАНЕЛЬ ОПЕРАТОРА</div><h2>Керуйте своїм паркінгом.</h2><p>Введіть ключ адміністратора з термінала запуску.</p><label for="admin-key">Ключ доступу</label><input id="admin-key" type="password" required autocomplete="off"><button class="primary">Увійти →</button></form>
+    <div id="admin-content" hidden>
+      <div class="admin-top"><h2>Операційна панель</h2><button id="logout" class="secondary">Вийти</button></div>
+
+<section class="panel camera-section" id="camera-section">
+ <div class="panel-title"><div><div class="eyebrow">IP-КАМЕРА · RTSP</div><h2>Підключення та розмітка</h2></div><span class="pill" id="camera-phase">Не підключено</span></div>
+ <div class="camera-grid">
+  <div>
+   <form id="camera-form">
+    <label for="camera-name">Назва камери</label><input id="camera-name" maxlength="80" required value="Камера 01">
+    <label for="camera-url">RTSP-адреса з логіном і паролем</label><input id="camera-url" type="password" maxlength="2048" placeholder="rtsp://user:password@192.168.0.100:554/stream" autocomplete="new-password">
+    <small id="camera-secret-hint">Адреса зберігається на сервері й не повертається у браузер.</small>
+    <label for="camera-transport">Транспорт</label><select id="camera-transport"><option value="tcp">TCP — рекомендовано</option><option value="udp">UDP</option></select>
+    <label class="check-label"><input id="camera-ai" type="checkbox">Визначати зайнятість через YOLO</label>
+    <p id="camera-mode-note"></p><small id="camera-dependencies"></small>
+    <button class="primary" type="submit" id="save-camera">Зберегти підключення</button>
+   </form>
+   <div class="camera-actions"><button class="primary" id="start-camera">Підключити камеру</button><button class="secondary" id="stop-camera">Зупинити</button></div>
+   <p id="camera-status-detail">Вкажіть адресу потоку з налаштувань вашої камери.</p>
+  </div>
+  <div>
+   <div class="camera-screen"><canvas id="camera-canvas" width="960" height="540" aria-label="Кадр камери для розмітки паркомісць"></canvas><div id="camera-placeholder">Кадр з’явиться після підключення камери.</div></div>
+   <div class="preview-toolbar"><label class="check-label"><input id="freeze-frame" type="checkbox">Зафіксувати кадр</label><small id="frame-time">Кадру ще немає</small></div>
+   <p>Для розмітки виберіть місце й клацніть його чотири кути по периметру. На телефоні торкніться кутів на зображенні.</p>
+   <div class="polygon-tools"><label for="polygon-space">Паркомісце<select id="polygon-space"></select></label><button class="secondary" id="reset-points">Скинути кути</button><button class="primary" id="add-polygon">Додати місце</button></div>
+   <small id="points-count">Позначено кутів: 0 / 4</small><div id="polygon-list"></div>
+   <button class="primary" id="save-polygons">Зберегти розмітку</button><p class="camera-help">Збереження розмітки зупинить камеру. Після цього знову натисніть «Підключити камеру». AI працює лише для розмічених місць.</p>
+  </div>
+ </div>
+</section>
+
+      <div class="admin-grid">
+        <section class="panel"><div class="eyebrow">НАРАХУВАННЯ ЗА ВЕСЬ ЧАС</div><h2 id="billed">0 грн</h2><p>Фактично сплачено: <strong>0 грн</strong></p><small>Платіжний провайдер не підключений.</small></section>
+        <section class="panel"><div class="eyebrow">ТАРИФ</div><form id="tariff-form"><label for="tariff-input">Гривень за годину</label><div class="inline"><input id="tariff-input" type="number" min="0" max="10000" step="0.01" required><button class="primary">Зберегти</button></div><small>Застосовується до нових сесій.</small></form></section>
+        <section class="panel"><div class="eyebrow">ДАНІ ПАРКОМІСЦЬ</div><h2 id="camera-state">—</h2><p id="camera-detail"></p><small>Стан кожного місця застаріває через 30 с.</small></section>
+      </div>
+      <section class="panel chart-panel"><h3>Зайнятість · останні 120 хвилин</h3><div id="history-chart" class="chart" aria-label="Історія зайнятості"></div><small>Фактично зібрані дані від моменту запуску сервера.</small></section>
+      <div class="admin-grid two"><section class="panel"><h3>Активні бронювання</h3><div id="admin-reservations"></div></section><section class="panel"><h3>Паркувальні сесії</h3><div id="admin-sessions"></div></section></div>
+      <section class="panel"><div class="panel-title"><div><h3>Місця та доступність</h3><p id="demo-hint"></p></div></div><div id="admin-spaces" class="admin-space-grid"></div></section>
+      <section class="panel"><h3>Останні події</h3><div id="events"></div></section>
+    </div>
+  </section>
+<footer><span>ParkFlow Admin · 0.2</span><a href="/">Повернутися до водія ↗</a></footer></main></body></html>
